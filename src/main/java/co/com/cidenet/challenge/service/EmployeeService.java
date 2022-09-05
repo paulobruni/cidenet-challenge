@@ -1,6 +1,7 @@
 package co.com.cidenet.challenge.service;
 
 import co.com.cidenet.challenge.commons.BusinessExceptionHandler;
+import co.com.cidenet.challenge.dto.response.EmployeeResponse;
 import co.com.cidenet.challenge.model.Employee;
 import co.com.cidenet.challenge.respository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,35 @@ public class EmployeeService {
 
     public Optional<Employee> getById(Integer id){
         return employeeRepository.findById(id);
+    }
+
+    // Consulting
+    public List<Employee> getByFirstName(String firstName){
+        return employeeRepository.findByFirstName(firstName);
+    }
+    public List<Employee> getByFirstLastName(String firstLastName){
+        return employeeRepository.findByFirstLastName(firstLastName);
+    }
+    public List<Employee> getBySecondLastName(String SecondLastName){
+        return employeeRepository.findBySecondLastName(SecondLastName);
+    }
+    public List<Employee> getByOtherNames(String otherNames){
+        return employeeRepository.findByOtherNames(otherNames);
+    }
+    public List<Employee> getByIdType(String idType){
+        return employeeRepository.findByTypeOfId(idType);
+    }
+    public List<Employee> getByIdNumber(String idNumber){
+        return employeeRepository.findByIdNumber(idNumber);
+    }
+    public List<Employee> getByCountry(String country){
+        return employeeRepository.findByCountry(country);
+    }
+    public List<Employee> getByEmail(String email){
+        return employeeRepository.findByEmail(email);
+    }
+    public List<Employee> getByStatus(String status){
+        return employeeRepository.findByStatus(status);
     }
 
     public void deleteById(Integer id){
