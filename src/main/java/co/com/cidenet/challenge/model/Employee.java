@@ -40,11 +40,16 @@ public class Employee {
     private String otherNames;
 
     @Column(name="country")
+    @Pattern(regexp = ("^(?i)\\bCOLOMBIA$|^(?i)UNITED STATES$\\b"), message = "Country must be COLOMBIA or UNITED STATES")
     //Validate to accept only Colombia or United States
     private String country;
 
     @Column(name="typeofid")
-    // Validate to accept only Citizenship Card, Alien Registration Card, Passport, Special Permit
+    @Pattern(regexp = ("^(?i)\\bCITIZENSHIP CARD$|" +
+                       "^(?i)ALIEN REGISTRATION CARD$|" +
+                       "^(?i)PASSPORT$|" +
+                       "^(?i)SPECIAL PERMIT$\\b"),
+                       message = "Type of ID must be CITIZENSHIP CARD or ALIEN REGISTRATION CARD or PASSPORT or SPECIAL PERMIT")
     private String typeOfId;
 
     @Column(name="idnumber")
@@ -64,6 +69,15 @@ public class Employee {
     private LocalDate editDate;
 
     @Column(name="area")
+    @Pattern(regexp = ("^(?i)\\bADMINISTRATION$|" +
+                       "^(?i)FINANCIAL$|" +
+                       "^(?i)PURCHASING$|" +
+                       "^(?i)INFRASTRUCTURE$|" +
+                       "^(?i)OPERATIONS$|" +
+                       "^(?i)HUMAN RESOURCES$|" +
+                       "^(?i)MISCELLANEOUS SERVICES$\\b"),
+                         message = "Area must be ADMINISTRATION or FINANCIAL or PURCHASING or INFRASTRUCTURE or " +
+                                 "OPERATIONS or HUMAN RESOURCES or MISCELLANEOUS SERVICES")
     private String area;
 
     @Column(name="status")

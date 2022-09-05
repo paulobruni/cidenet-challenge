@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -31,6 +32,12 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponse> save(@RequestBody EmployeeRequest request){
 
         Employee employee = mapper.toEmployee(request);
+
+        employee.setCountry(employee.getCountry().toUpperCase(Locale.ROOT));
+
+        employee.setTypeOfId(employee.getTypeOfId().toUpperCase(Locale.ROOT));
+
+        employee.setArea(employee.getArea().toUpperCase(Locale.ROOT));
 
         Employee newEmployee = employeeService.save(employee);
 
