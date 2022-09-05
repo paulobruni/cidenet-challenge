@@ -3,48 +3,33 @@ package co.com.cidenet.challenge.mapper;
 import co.com.cidenet.challenge.dto.request.EmployeeRequest;
 import co.com.cidenet.challenge.dto.response.EmployeeResponse;
 import co.com.cidenet.challenge.model.Employee;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
 public class EmployeeMapper {
 
-    public static Employee toEmployee(EmployeeRequest request){
+    private final ModelMapper mapper;
 
-        Employee employee = new Employee();
-
-        employee.setFirstName(request.getFirstName());
-        employee.setFirstLastName(request.getFirstLastName());
-        employee.setSecondLastName(request.getSecondLastName());
-        employee.setOtherNames(request.getOtherNames());
-        employee.setCountry(request.getCountry());
-        employee.setTypeOfId(request.getTypeOfId());
-        employee.setIdNumber(request.getIdNumber());
-        employee.setEntryDate(request.getEntryDate());
-        employee.setArea(request.getArea());
-
-        return employee;
-
+    public EmployeeMapper(ModelMapper mapper) {
+        this.mapper = mapper;
     }
 
-    public static EmployeeResponse toEmployeeResponse(Employee employee){
+    public Employee toEmployee(EmployeeRequest request) {
+        return mapper.map(request, Employee.class);
+    }
 
-        EmployeeResponse response = new EmployeeResponse();
+    public EmployeeResponse toEmployeeResponse(Employee employee){
+        return mapper.map(employee, EmployeeResponse.class);
+    }
 
-        response.setId(employee.getId());
-        response.setFirstName(employee.getFirstName());
-        response.setFirstLastName(employee.getFirstLastName());
-        response.setSecondLastName(employee.getSecondLastName());
-        response.setOtherNames(employee.getOtherNames());
-        response.setCountry(employee.getCountry());
-        response.setTypeOfId(employee.getTypeOfId());
-        response.setIdNumber(employee.getIdNumber());
-        response.setEmail(employee.getEmail());
-        response.setEntryDate(employee.getEntryDate());
-        response.setEditDate(employee.getEditDate());
-        response.setStatus(employee.getStatus());
-        response.setArea(employee.getArea());
-        response.setLog(employee.getLog());
-
-        return response;
-
+    public List<EmployeeResponse> toEmployeeResponseList(List<Employee> employees){
+        return employees.stream()
+                .map(this::toEmployeeResponse)
+                .collect(Collectors.toList());
     }
 
 }
