@@ -103,4 +103,19 @@ public class EmployeeRequest {
     public void setArea(String area) {
         this.area = area;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeRequest{" +
+                "firstName='" + firstName + '\'' +
+                ", firstLastName='" + firstLastName + '\'' +
+                ", secondLastName='" + secondLastName + '\'' +
+                ", otherNames='" + otherNames + '\'' +
+                ", country='" + country + '\'' +
+                ", typeOfId='" + typeOfId + '\'' +
+                ", idNumber='" + idNumber + '\'' +
+                ", entryDate=" + entryDate +
+                ", area='" + area + '\'' +
+                '}';
+    }
 }

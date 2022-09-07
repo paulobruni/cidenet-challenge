@@ -5,6 +5,7 @@ import co.com.cidenet.challenge.dto.response.EmployeeResponse;
 import co.com.cidenet.challenge.mapper.EmployeeMapper;
 import co.com.cidenet.challenge.model.Employee;
 import co.com.cidenet.challenge.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class EmployeeController {
 
         employee.setArea(employee.getArea().toUpperCase(Locale.ROOT));
 
-        Employee newEmployee = employeeService.save(employee);
+        Employee newEmployee = employeeService.save(employee, 'c');
 
         EmployeeResponse employeeResponse = mapper.toEmployeeResponse(newEmployee);
 
@@ -63,7 +64,11 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(mapper.toEmployeeResponse(employee.get()));
     }
 
-    // Consulting
+    /*
+    *
+    * Begin Consulting Endpoints
+    *
+    * */
     @GetMapping("/firstname={firstName}")
     public ResponseEntity<List<EmployeeResponse>> getByFirstName(@PathVariable String firstName){
         List<EmployeeResponse> employeeResponses = search(firstName, "firstName");
@@ -118,16 +123,27 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(employeeResponses);
     }
 
-    @PutMapping(path = "/edit")
-    public ResponseEntity<EmployeeResponse> edit(@RequestBody EmployeeRequest request){
+    /*
+     *
+     * End Consulting Endpoints
+     *
+     * */
 
-        Employee employee = mapper.toEmployee(request);
+    @PutMapping(path = "/edit={id}")
+    public ResponseEntity<EmployeeResponse> edit(@PathVariable Integer id, @RequestBody EmployeeRequest request){
 
-        Employee  editedEmployee = employeeService.save(employee);
+        Optional<Employee> currentEmployee = employeeService.getById(id);
+
+        if(currentEmployee.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        Employee newEmployee = mapper.toEmployeeEdit(request, currentEmployee.get());
+
+        Employee editedEmployee = employeeService.save(newEmployee, 'e');
 
         EmployeeResponse employeeResponse = mapper.toEmployeeResponse(editedEmployee);
 
-        return ResponseEntity.status(HttpStatus.OK).body(employeeResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeResponse);
     }
 
     // Delete Employee
@@ -164,10 +180,10 @@ public class EmployeeController {
                 employees = employeeService.getByIdType(param.toUpperCase(Locale.ROOT));
             break;
             case "idNumber":
-                employees = employeeService.getByIdNumber(param.toUpperCase(Locale.ROOT));
+                employees = employeeService.getByIdNumber(param);
             break;
             case "email":
-                employees = employeeService.getByEmail(param.toUpperCase(Locale.ROOT));
+                employees = employeeService.getByEmail(param);
             break;
             case "status":
                 employees = employeeService.getByStatus(param.toUpperCase(Locale.ROOT));

@@ -198,4 +198,23 @@ public class Employee {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", firstLastName='" + firstLastName + '\'' +
+                ", secondLastName='" + secondLastName + '\'' +
+                ", otherNames='" + otherNames + '\'' +
+                ", country='" + country + '\'' +
+                ", typeOfId='" + typeOfId + '\'' +
+                ", idNumber='" + idNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", entryDate=" + entryDate +
+                ", editDate=" + editDate +
+                ", area='" + area + '\'' +
+                ", status='" + status + '\'' +
+                ", log='" + log + '\'' +
+                '}';
+    }
 }
