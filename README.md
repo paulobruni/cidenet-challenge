@@ -13,9 +13,9 @@
 * Swagger
 * Maven
 
-## Banco de Dados
+## Instructions
 
-### Postgres
+### Postgres Database Configuration
 
 [Postgres Docker Hub](https://hub.docker.com/_/postgres)
 
