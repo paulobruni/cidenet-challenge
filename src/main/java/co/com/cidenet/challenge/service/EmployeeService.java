@@ -25,30 +25,31 @@ public class EmployeeService {
 
     public Employee save(Employee employee, char function)
     {
-        //[OK]Entry Date validation
-        if(function == 'c')
-        {
-            if(employee.getEntryDate().isBefore(LocalDate.now().minusMonths(1)) ||
+        final String COLOMBIA_DOMAIN = "@cidenet.com.co";
+        final String US_DOMAIN = "@cidenet.com.us";
+
+        //[OK]Entry Date and Email validation
+        if(function == 'c') {
+            if (employee.getEntryDate().isBefore(LocalDate.now().minusMonths(1)) ||
                     employee.getEntryDate().isAfter(LocalDate.now())) {
                 throw new BusinessExceptionHandler("Entry date must be up to one month less");
             }
-
-            //[NOK]Email validation - Non-duplicated email validation needed
-            final String COLOMBIA_DOMAIN = "@cidenet.com.co";
-            final String US_DOMAIN = "@cidenet.com.us";
-
-            String email = employee.getFirstName().toLowerCase(Locale.ROOT)+".";
-            email = email.concat(employee.getFirstLastName().toLowerCase(Locale.ROOT).replaceAll("\\s", ""));
-
-            if(employee.getCountry().equals("COLOMBIA"))
-                email = email.concat(COLOMBIA_DOMAIN);
-            else email = email.concat(US_DOMAIN);
-
-            if(email.length() > 300)
-                throw new BusinessExceptionHandler("Email must be up to 300 characters");
-
-            employee.setEmail(email);
         }
+
+        String email = employee.getFirstName().toLowerCase(Locale.ROOT) + ".";
+        email = email.concat(employee.getFirstLastName().toLowerCase(Locale.ROOT).replaceAll("\\s", ""));
+
+        if (employee.getCountry().equals("COLOMBIA"))
+            email = email.concat(COLOMBIA_DOMAIN);
+        else email = email.concat(US_DOMAIN);
+
+
+        if(email.length() > 300)
+            throw new BusinessExceptionHandler("Email must be up to 300 characters");
+
+        email = this.emailValidator(email);
+
+        employee.setEmail(email);
 
         return employeeRepository.save(employee);
     }
@@ -92,6 +93,27 @@ public class EmployeeService {
 
     public void deleteById(Integer id){
         employeeRepository.deleteById(id);
+    }
+
+    private String emailValidator(String email)
+    {
+        String[] split = email.split("@");
+        String name = split[0];
+        String domain = split[1];
+        String newEmail = email;
+
+        boolean checkEmail = employeeRepository.existsByEmail(email);
+
+        Integer i = 1;
+        while (checkEmail){
+            newEmail = name.concat(i+"@"+domain);
+            System.out.println(newEmail);
+            checkEmail = employeeRepository.existsByEmail(newEmail);
+            name = split[0];
+            i++;
+        }
+
+        return newEmail;
     }
 
 }
